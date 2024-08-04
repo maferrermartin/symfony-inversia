@@ -1,91 +1,55 @@
-# Symfony Docker
+# Symfony Inversiva
 
-A [Docker](https://www.docker.com/)-based installer and runtime for the [Symfony](https://symfony.com) web framework,
-with [FrankenPHP](https://frankenphp.dev) and [Caddy](https://caddyserver.com/) inside!
+Se trata de una pequeña aplicación API Rest desarrollada con Symfony
+Contiene dos controladores para dos entidades: Category y Product
 
-![CI](https://github.com/dunglas/symfony-docker/workflows/CI/badge.svg)
+Las direcciones y protocolos son:
 
-## Getting Started
+https://localhost/categories - GET -> Devuelve una lista en formato JSON de los datos de todas las categorias
+https://localhost/categories/{id} - GET -> Devuelve un objeto en formato JSON de la categoria con el ID dado
+https://localhost/categories - POST -> Permite añadir una nueva categoria
+https://localhost/categories/{id} - POST/PUT/PATCH -> Permite editar una categoria
+https://localhost/categories/{id} - DELETE -> Elimina la categoria asociada al ID dado
 
-1. If not already done, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
-2. Run `docker compose build --no-cache` to build fresh images
-3. Run `docker compose up --pull always -d --wait` to set up and start a fresh Symfony project
-4. Open `https://localhost` in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
-5. Run `docker compose down --remove-orphans` to stop the Docker containers.
+https://localhost/products - GET -> Devuelve una lista en formato JSON de los datos de todas los productos
+https://localhost/products/{id} - GET -> Devuelve un objeto en formato JSON del producto con el ID dado
+https://localhost/products - POST -> Permite añadir un nuevo producto
+https://localhost/products/{id} - POST/PUT/PATCH -> Permite editar un producto
+https://localhost/products/{id} - DELETE -> Elimina el producto asociada al ID dado
 
-## Features
+Nota: Por algún motivo cuando hacía pruebas con POSTMAN no me permitia realizar actualizaciones de entidades con PUT/PATCH, no he conseguido que pasará los parámetros, por ese motivo está habilitado el método POST en la actualización
 
-* Production, development and CI ready
-* Just 1 service by default
-* Blazing-fast performance thanks to [the worker mode of FrankenPHP](https://github.com/dunglas/frankenphp/blob/main/docs/worker.md) (automatically enabled in prod mode)
-* [Installation of extra Docker Compose services](docs/extra-services.md) with Symfony Flex
-* Automatic HTTPS (in dev and prod)
-* HTTP/3 and [Early Hints](https://symfony.com/blog/new-in-symfony-6-3-early-hints) support
-* Real-time messaging thanks to a built-in [Mercure hub](https://symfony.com/doc/current/mercure.html)
-* [Vulcain](https://vulcain.rocks) support
-* Native [XDebug](docs/xdebug.md) integration
-* Super-readable configuration
+# 1: Iniciar proyecto:
 
-**Enjoy!**
+El proyecto se encuentra contenido en un contenedor docker:
 
-## Docs
+1. Instalar docker si no se dispone del programa, [install Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
+2. Iniciar `docker compose build --no-cache` para cargar los contenedores
+3. Iniciar `docker compose up --pull always -d --wait` para iniciar el proyecto
+4. Abrir `https://localhost` en el navegador y [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334)
+5. Iniciar `docker compose down --remove-orphans` cuando se quiera detener los contenedores
 
-1. [Options available](docs/options.md)
-2. [Using Symfony Docker with an existing project](docs/existing-project.md)
-3. [Support for extra services](docs/extra-services.md)
-4. [Deploying in production](docs/production.md)
-5. [Debugging with Xdebug](docs/xdebug.md)
-6. [TLS Certificates](docs/tls.md)
-7. [Using MySQL instead of PostgreSQL](docs/mysql.md)
-8. [Using Alpine Linux instead of Debian](docs/alpine.md)
-9. [Using a Makefile](docs/makefile.md)
-10. [Updating the template](docs/updating.md)
-11. [Troubleshooting](docs/troubleshooting.md)
+# 2. API y Testing
 
-## License
+Se han hecho pequeñas pruebas para hacer pruebas de API y mostrar algunos datos de una interfaz documentada de la API
 
-Symfony Docker is available under the MIT License.
+En la URL: https://localhost/api se puede observar una pequeña definición de los datos y métodos de la entidad de Category
+Estaría aún incompleta y con datos por complementar, se ha realizado con API Platform (https://api-platform.com)
 
-## Credits
+Para el testing se ha creado una pequeña prueba mediante pruebas de API:
 
-Created by [Kévin Dunglas](https://dunglas.dev), co-maintained by [Maxime Helias](https://twitter.com/maxhelias) and sponsored by [Les-Tilleuls.coop](https://les-tilleuls.coop).
+1. Se han generado Factory para las entidades, son configuraciones para generar datos aleatorios en la base de datos de dev. El objetivo de esto es poder hacer pruebas de escalabilidad y generar datos para realizar los test
 
-## Commands:
-
-Create a new entity
-
-```shell
-docker compose exec php bin/console make:entity
-```
-
-Create a new controller
-
-```shell
-docker compose exec php bin/console make:controller [ControllerName]
-```
-
-# Testing
-
-To test the capacity of the API 
-
-```shell
-docker compose exec php bin/console make:factory [factory]
-```
-
-# Create stories
-
-```shell
-docker compose exec php bin/console make:story [DefaultEntity]
-```
-
-# Load the fixtures
-
+2. Para generar datos de pruebas hay que executar el comando:
 ```shell
 docker compose exec php bin/console doctrine:fixtures:load
 ```
+Nota: Si se quisiera aumentar o disminuir la cantidad de datos habría que modificar los valores de las clases DefaultCategoryStory y DefaultProductStory situadas en App/src/Story
 
-# Execute tests
+3. Los tests se executan con el comando:
 
 ```shell
 docker compose exec php bin/phpunit
 ```
+
+Nota: Hay un test que hace una prueba de llamada a un controlador para simular una petición. Cada vez que se inician los tests la BBDD es restaurada y se cargan datos aleatorios. Sólo hay un test para la primera llamada GET, por algún motivo no he conseguido que en las llamadas de tipo POST pasará los parámetros en el body o json.
