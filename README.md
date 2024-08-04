@@ -27,6 +27,8 @@ https://localhost/products/{id} - DELETE -> Elimina el producto asociada al ID d
 
 Nota: Por algún motivo cuando hacía pruebas con POSTMAN no me permitia realizar actualizaciones de entidades con PUT/PATCH, no he conseguido que pasará los parámetros, por ese motivo está habilitado el método POST en la actualización
 
+En la carpeta tests/Postman hay un fichero con una configuración de POSTMAN con todas las llamadas configuradas para hacer pruebas
+
 # 1: Iniciar proyecto:
 
 El proyecto se encuentra contenido en un contenedor docker:
