@@ -15,13 +15,13 @@ class CategoryController extends AbstractController
         $this->categoryService = $categoryService;
     }
 
-    #[Route('/api/categories', name: 'app_category', methods: ['GET'])]
+    #[Route('/categories', name: 'app_category', methods: ['GET'])]
     public function getAll(): JsonResponse
     {
         return $this->json($this->categoryService->getAll());
     }
 
-    #[Route('/api/category/{id}', name: 'app_category_by_id', methods: ['GET'])]
+    #[Route('/categories/{id}', name: 'app_category_by_id', methods: ['GET'])]
     public function getById(String $id): JsonResponse
     {
         if (empty($id)) {
@@ -35,12 +35,14 @@ class CategoryController extends AbstractController
         }
     }
 
-    #[Route('/api/category', name: 'app_category_add', methods: ['POST'])]
+    #[Route('/categories', name: 'app_category_add', methods: ['POST'])]
     public function add(Request $request): JsonResponse
     {
         /** @var Request $name $description */
         $name = $request->get('name');
         $description = $request->get('description');
+
+        return new JsonResponse(['error' => $name], 404);
 
         if (empty($name)) {
             return new JsonResponse(['error' => 'The category name cannot be empty'], 404);
@@ -56,7 +58,7 @@ class CategoryController extends AbstractController
         return $this->json($category->getSerializeToArray());
     }
 
-    #[Route('/api/category/{id}', name: 'app_category_edit', methods: ['POST'])]
+    #[Route('/categories/{id}', name: 'app_category_edit', methods: ['POST'])]
     public function edit(String $id, Request $request): JsonResponse
     {
         /** @var Request $name $description */
@@ -81,7 +83,7 @@ class CategoryController extends AbstractController
         return $this->json($category->getSerializeToArray());
     }
 
-    #[Route('/api/category/{id}', name: "delete_category", methods: ['DELETE'])]
+    #[Route('/categories/{id}', name: "delete_category", methods: ['DELETE'])]
     public function remove(String $id): JsonResponse {
         if (empty($id)) {
             return new JsonResponse(['error' => 'The category ID cannot be empty'], 404);

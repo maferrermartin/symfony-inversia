@@ -63,3 +63,29 @@ Create a new controller
 ```shell
 docker compose exec php bin/console make:controller [ControllerName]
 ```
+
+# Testing
+
+To test the capacity of the API 
+
+```shell
+docker compose exec php bin/console make:factory [factory]
+```
+
+# Create stories
+
+```shell
+docker compose exec php bin/console make:story [DefaultEntity]
+```
+
+# Load the fixtures
+
+```shell
+docker compose exec php bin/console doctrine:fixtures:load
+```
+
+# Execute tests
+
+```shell
+docker compose exec php bin/phpunit
+```

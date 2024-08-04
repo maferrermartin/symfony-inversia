@@ -15,13 +15,13 @@ class ProductController extends AbstractController
         $this->productService = $productService;
     }
 
-    #[Route('/api/products', name: 'app_product', methods: ['GET'])]
+    #[Route('/products', name: 'app_product', methods: ['GET'])]
     public function getAll(): JsonResponse
     {
         return $this->json($this->productService->getAll());
     }
 
-    #[Route('/api/product/{id}', name: 'app_product_by_id', methods: ['GET'])]
+    #[Route('/products/{id}', name: 'app_product_by_id', methods: ['GET'])]
     public function getById(String $id): JsonResponse
     {
         if (empty($id)) {
@@ -35,7 +35,7 @@ class ProductController extends AbstractController
         }
     }
 
-    #[Route('/api/product', name: 'app_product_add', methods: ['POST'])]
+    #[Route('/products', name: 'app_product_add', methods: ['POST'])]
     public function add(Request $request): JsonResponse
     {
         /** @var Request $name $description $price $categoryId */
@@ -76,7 +76,7 @@ class ProductController extends AbstractController
         return $this->json($product->getSerializeToArray());
     }
 
-    #[Route('/api/product/{id}', name: 'app_product_edit', methods: ['POST'])]
+    #[Route('/products/{id}', name: 'app_product_edit', methods: ['POST'])]
     public function edit(String $id, Request $request): JsonResponse
     {
         /** @var Request $name $description $price $categoryId */
@@ -111,7 +111,7 @@ class ProductController extends AbstractController
         return $this->json($product->getSerializeToArray());
     }
 
-    #[Route('/api/product/{id}', name: "delete_product", methods: ['DELETE'])]
+    #[Route('/products/{id}', name: "delete_product", methods: ['DELETE'])]
     public function remove(String $id): JsonResponse {
         if (empty($id)) {
             return new JsonResponse(['error' => 'The product ID cannot be empty'], 404);

@@ -8,7 +8,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {
+    public $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         $this->em = $entityManager;
     }
 

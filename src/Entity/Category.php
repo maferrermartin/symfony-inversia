@@ -6,23 +6,69 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use App\Controller\CategoryController;
 
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Delete;
+
+/** A category */
+#[ApiResource(operations: [
+    new GetCollection(
+        name: 'app_category', 
+        description: 'Get all categories',
+        uriTemplate: '/categories', 
+        controller: CategoryController::class
+    ),
+    new Get(
+        name: 'app_category_by_id', 
+        uriTemplate: '/categories/{id}', 
+        controller: CategoryController::class
+    ),
+    new Post(
+        name: 'app_category_add', 
+        uriTemplate: '/categories/{id}', 
+        controller: CategoryController::class
+    ),
+    new Put(
+        name: 'app_category_put', 
+        uriTemplate: '/categories/{id}', 
+        controller: CategoryController::class
+    ),
+    new Patch(
+        name: 'app_category_patch', 
+        uriTemplate: '/categories/{id}', 
+        controller: CategoryController::class
+    ),
+    new Delete(
+        name: 'delete_category', 
+        uriTemplate: '/categories/{id}', 
+        controller: CategoryController::class
+    )
+])]
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
 {
+    /** The ID */
     #[ORM\Id]
-    #[ORM\GeneratedValue]
+    #[ORM\GeneratedValue(strategy: "SEQUENCE")]
     #[ORM\Column]
     private ?int $id = null;
 
+    /** The name */
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    /** The description */
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
     /**
-     * @var Collection<int, Product>
+     * @var Collection<int, Product> The collection of products associated to the category
      */
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'Category')]
     private Collection $products;
