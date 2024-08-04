@@ -6,15 +6,23 @@ Contiene dos controladores para dos entidades: Category y Product
 Las direcciones y protocolos son:
 
 https://localhost/categories - GET -> Devuelve una lista en formato JSON de los datos de todas las categorias
+
 https://localhost/categories/{id} - GET -> Devuelve un objeto en formato JSON de la categoria con el ID dado
+
 https://localhost/categories - POST -> Permite añadir una nueva categoria
+
 https://localhost/categories/{id} - POST/PUT/PATCH -> Permite editar una categoria
+
 https://localhost/categories/{id} - DELETE -> Elimina la categoria asociada al ID dado
 
 https://localhost/products - GET -> Devuelve una lista en formato JSON de los datos de todas los productos
+
 https://localhost/products/{id} - GET -> Devuelve un objeto en formato JSON del producto con el ID dado
+
 https://localhost/products - POST -> Permite añadir un nuevo producto
+
 https://localhost/products/{id} - POST/PUT/PATCH -> Permite editar un producto
+
 https://localhost/products/{id} - DELETE -> Elimina el producto asociada al ID dado
 
 Nota: Por algún motivo cuando hacía pruebas con POSTMAN no me permitia realizar actualizaciones de entidades con PUT/PATCH, no he conseguido que pasará los parámetros, por ese motivo está habilitado el método POST en la actualización
